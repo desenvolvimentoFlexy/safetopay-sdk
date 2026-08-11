@@ -18,6 +18,7 @@ class CreditCard implements \JsonSerializable
     private $IsApplyInterest;
     private $InterestRate;
     private $SoftDescriptor;
+    private $ExternalAuthentication;
 
     function __construct($Holder, $CardNumber, $ExpirationDate, $SecurityCode, $Token = null, $InstallmentQuantity = 1,
                          $IsPreAuthorization = false, $IsApplyInterest = false, $InterestRate = 0, $SoftDescriptor = null)
@@ -134,9 +135,19 @@ class CreditCard implements \JsonSerializable
         $this->SoftDescriptor = $SoftDescriptor;
     }
 
+    public function getExternalAuthentication()
+    {
+        return $this->ExternalAuthentication;
+    }
+
+    public function setExternalAuthentication($ExternalAuthentication = null)
+    {
+        $this->ExternalAuthentication = $ExternalAuthentication;
+    }
+
     public function JsonSerialize()
     {
-        return [
+        $data = [
             'Holder' => $this->Holder,
             'CardNumber' => $this->CardNumber,
             'ExpirationDate' => $this->ExpirationDate,
@@ -148,6 +159,12 @@ class CreditCard implements \JsonSerializable
             'InterestRate' => (float)$this->InterestRate,
             'SoftDescriptor' => $this->SoftDescriptor
         ];
+
+        if (!empty($this->ExternalAuthentication)) {
+            $data['ExternalAuthentication'] = $this->ExternalAuthentication;
+        }
+
+        return $data;
     }
 }
 
